@@ -1,0 +1,35 @@
+.navbar {
+    height: 90px;
+}
+
+.logo {
+    width: 5rem;
+}
+
+.link-header {
+    color: rgb(63, 63, 63);
+    font-weight: 600;
+    font-size: larger;
+    margin-right: 3rem;
+    position: relative;
+}
+
+.link-header::after {
+    content: " ";
+    width: 0%;
+    height: 2px;
+    background-color: rgb(63, 63, 63);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.2s ease-in-out;
+}
+
+.link-header:hover::after {
+    width: 100%;
+}
+
+.botao-login-inicial {
+    margin-top: 1rem;
+}

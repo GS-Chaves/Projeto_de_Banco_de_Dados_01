@@ -1,0 +1,38 @@
+.loginForm {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.telaLogin {
+    background-color: rgb(216, 237, 255);
+    height: 90vh;
+    width: 100%;
+
+}
+
+#formLogin {
+    background-color: rgba(148, 144, 144, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+.espaco {
+    width: 3rem;
+}
+
+.titleLogin {
+    margin-left: 4rem;
+}
+
+.registrar {
+    margin-left: 3rem;
+}
+
+.linkRegistrar {
+    text-decoration: none;
+    color: rgb(0, 130, 190);
+}
+
+.linkRegistrar:hover {
+    text-decoration: underline;
+}
