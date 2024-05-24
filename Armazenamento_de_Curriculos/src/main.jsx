@@ -55,6 +55,10 @@ const router = createBrowserRouter([
         path: "esqueceu-senha",
         element: <Tela_Esqueceu_Senha />,
       },
+      {
+        path: "*",
+        element: <Tela_Inicial />
+      }
     ]
   }
 ]);

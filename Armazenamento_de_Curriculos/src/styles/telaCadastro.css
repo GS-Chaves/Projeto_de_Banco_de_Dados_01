@@ -1,0 +1,5 @@
+.telaCadastro {
+    background-color: rgba(148, 144, 144, 0.7);
+    backdrop-filter: blur(15px);
+    margin-top: 5rem;
+}

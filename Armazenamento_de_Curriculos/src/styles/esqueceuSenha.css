@@ -1,0 +1,23 @@
+.retrievalPage {
+    display: flex;
+    justify-content: center;
+    margin-top: 15rem;
+}
+
+#formEmail {
+    background-color: rgba(148, 144, 144, 0.7);
+    backdrop-filter: blur(15px);
+}
+
+.voltarLogin {
+    margin-left: 11.5rem;
+    margin-top: 1rem
+}
+
+.voltarLoginLink {
+    text-decoration: none;
+}
+
+.voltarLoginLink:hover {
+    text-decoration: underline;
+}
