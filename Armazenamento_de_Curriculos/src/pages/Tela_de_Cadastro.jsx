@@ -10,22 +10,26 @@ import '../styles/telaCadastro.css';
 const Tela_de_Cadastro = () => {
     const [validated, setValidated] = useState(false);
     const [passwordMatch, setPasswordMatch] = useState(true);
+    const [userName, setUserName] = useState("");
+    const [userLastName, setUserLastName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
+    const [userPassword, setUserPassword] = useState("");
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         const password = form.elements.validationCustom04.value;
         const confirmPassword = form.elements.validationCustom05.value;
-
         if (form.checkValidity() === false || password !== confirmPassword) {
-            event.preventDefault();
             event.stopPropagation();
+
             if (password !== confirmPassword) {
                 setPasswordMatch(false);
             }
         } else {
             setPasswordMatch(true);
+            alert("Enviando os dados: " + userName + " " + userLastName + " - " + userEmail + " - " + userPassword);
         }
-
+        event.preventDefault();
         setValidated(true);
     };
 
@@ -40,6 +44,7 @@ const Tela_de_Cadastro = () => {
                             required
                             type="text"
                             placeholder="Digite seu nome..."
+                            onChange={(e) => setUserName(e.target.value)}
                         />
                         <Form.Control.Feedback>Ok!</Form.Control.Feedback>
                         <Form.Control.Feedback type='invalid'>Por favor coloque seu Nome!</Form.Control.Feedback>
@@ -50,6 +55,7 @@ const Tela_de_Cadastro = () => {
                             required
                             type="text"
                             placeholder="Digite seu sobrenome..."
+                            onChange={(e) => setUserLastName(e.target.value)}
                         />
                         <Form.Control.Feedback>Ok!</Form.Control.Feedback>
                         <Form.Control.Feedback type='invalid'>Por favor coloque seu Sobrenome!</Form.Control.Feedback>
@@ -62,13 +68,14 @@ const Tela_de_Cadastro = () => {
                             required
                             type="email"
                             placeholder="Digite seu email..."
+                            onChange={(e) => setUserEmail(e.target.value)}
                         />
                         <Form.Control.Feedback>Ok!</Form.Control.Feedback>
                         <Form.Control.Feedback type='invalid'>Por favor coloque seu Email!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} md="3" controlId="validationCustom04">
                         <Form.Label>Senha</Form.Label>
-                        <Form.Control type="password" placeholder="Digite sua senha..." required />
+                        <Form.Control type="password" placeholder="Digite sua senha..." required onChange={(e) => setUserPassword(e.target.value)} />
                         <Form.Control.Feedback>Ok!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">
                             Por favor escolha uma senha!

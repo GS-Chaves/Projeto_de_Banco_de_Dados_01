@@ -28,11 +28,6 @@ const Tela_de_Login = () => {
                         <Form.Label>Senha</Form.Label>
                         <Form.Control type="password" placeholder="Senha" required onChange={(e) => setPassWord(e.target.value)} />
                     </Form.Group>
-                    <Form.Group className="d-flex justify-content-between" controlId="rememberOfMe">
-                        <Form.Check className='mt-2' type="checkbox" label="Lembre de mim" />
-                        <div className='espaco'></div>
-                        <Link to="/esqueceu-senha"><Button className='mb-3' variant="outline-primary">Esqueceu a senha?</Button>{' '}</Link>
-                    </Form.Group>
                     <Button className='col-md-12' variant="primary" type="submit">
                         Login
                     </Button>
