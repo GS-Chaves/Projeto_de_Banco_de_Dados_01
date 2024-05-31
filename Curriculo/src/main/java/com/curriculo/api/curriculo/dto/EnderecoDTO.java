@@ -1,6 +1,6 @@
-package com.curriculo.api.curriculo.entity;
+package com.curriculo.api.curriculo.dto;
 
-import com.curriculo.api.curriculo.dto.EnderecoDTO;
+import com.curriculo.api.curriculo.entity.EnderecoEntity;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class EnderecoEntity {
+public class EnderecoDTO {
     private int id_endereco;
     private String rua;
     private int id_bairro;
@@ -17,7 +17,7 @@ public class EnderecoEntity {
     private int id_estado;
     private int id_pais;
 
-    public EnderecoEntity(EnderecoDTO enderecoDTO){
-        BeanUtils.copyProperties(enderecoDTO, this);
+    public EnderecoDTO(EnderecoEntity enderecoEntity){
+        BeanUtils.copyProperties(enderecoEntity, this);
     }
 }

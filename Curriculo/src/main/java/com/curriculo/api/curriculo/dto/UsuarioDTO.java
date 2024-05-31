@@ -1,6 +1,6 @@
-package com.curriculo.api.curriculo.entity;
+package com.curriculo.api.curriculo.dto;
 
-import com.curriculo.api.curriculo.dto.UsuarioDTO;
+import com.curriculo.api.curriculo.entity.UsuarioEntity;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.BeanUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UsuarioEntity {
+public class UsuarioDTO {
     private int id_usuario;
     private String nome_usuario;
     private String email_usuario;
     private String senha_usuario;
 
-    public UsuarioEntity(UsuarioDTO usuarioDTO) {
-        BeanUtils.copyProperties(usuarioDTO, this);
+    public UsuarioDTO(UsuarioEntity usuarioEntity){
+        BeanUtils.copyProperties(usuarioEntity, this);
     }
 }

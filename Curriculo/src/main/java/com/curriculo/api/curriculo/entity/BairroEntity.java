@@ -1,6 +1,8 @@
 package com.curriculo.api.curriculo.entity;
 
+import com.curriculo.api.curriculo.dto.BairroDTO;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
@@ -10,4 +12,8 @@ import lombok.*;
 public class BairroEntity {
     private int id_bairro;
     private String nome_bairro;
+
+    public BairroEntity(BairroDTO bairroDTO){
+        BeanUtils.copyProperties(bairroDTO, this);
+    }
 }

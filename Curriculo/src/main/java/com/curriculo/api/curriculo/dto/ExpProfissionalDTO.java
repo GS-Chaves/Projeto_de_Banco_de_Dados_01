@@ -1,6 +1,6 @@
-package com.curriculo.api.curriculo.entity;
+package com.curriculo.api.curriculo.dto;
 
-import com.curriculo.api.curriculo.dto.ExpProfissionalDTO;
+import com.curriculo.api.curriculo.entity.ExpProfissionalEntity;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ExpProfissionalEntity {
+public class ExpProfissionalDTO {
     private int id_exp_profissional;
     private String nome_empresa;
     private LocalDate data_inicio;
@@ -19,7 +19,7 @@ public class ExpProfissionalEntity {
     private boolean status_exp_profissional;
     private int id_curriculo;
 
-    public ExpProfissionalEntity(ExpProfissionalDTO expProfissionalDTO) {
-        BeanUtils.copyProperties(expProfissionalDTO, this);
+    public ExpProfissionalDTO(ExpProfissionalEntity expProfissionalEntity) {
+        BeanUtils.copyProperties(expProfissionalEntity, this);
     }
 }

@@ -1,6 +1,6 @@
-package com.curriculo.api.curriculo.entity;
+package com.curriculo.api.curriculo.dto;
 
-import com.curriculo.api.curriculo.dto.FormacaoDTO;
+import com.curriculo.api.curriculo.entity.FormacaoEntity;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.BeanUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class FormacaoEntity {
+public class FormacaoDTO {
     private int id_formacao;
     private String curso;
     private boolean status_formacao;
     private int id_curriculo;
 
-    public FormacaoEntity(FormacaoDTO formacaoDTO) {
-        BeanUtils.copyProperties(formacaoDTO, this);
+    public FormacaoDTO(FormacaoEntity formacaoEntity){
+        BeanUtils.copyProperties(formacaoEntity, this);
     }
 }
