@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class CurriculoDTO {
     private int id_curriculo;
     private String url_foto_pessoal;
-    private int cpf;
+    private String cpf;
     private LocalDate data_nascimento;
     private int id_usuario;
 

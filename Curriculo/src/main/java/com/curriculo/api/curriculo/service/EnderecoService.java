@@ -1,53 +1,56 @@
-package com.curriculo.api.curriculo.repository.endereco;
+package com.curriculo.api.curriculo.service;
 
-import com.curriculo.api.curriculo.entity.EnderecoEntity;
+import com.curriculo.api.curriculo.dto.EnderecoDTO;
+import com.curriculo.api.curriculo.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Repository
-public class EnderecoRepositoryImpl implements EnderecoRepository {
+@Service
+public class EnderecoService implements EnderecoRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<EnderecoEntity> rowMapper = new BeanPropertyRowMapper<>(EnderecoEntity.class);
+    private RowMapper<EnderecoDTO> rowMapper = new BeanPropertyRowMapper<>(EnderecoDTO.class);
 
 
     @Override
-    public EnderecoEntity save(EnderecoEntity endereco) {
+    public EnderecoDTO save(EnderecoDTO endereco) {
         String sql = "INSERT INTO endereco (rua, id_bairro, id_cidade, id_estado, id_pais) VALUES (?,?,?,?,?)";
-        jdbcTemplate.update(sql, endereco.getRua(), endereco.getId_bairro(), endereco.getId_cidade(), endereco.getId_estado(), endereco.getId_pais());
-        int id = jdbcTemplate.queryForObject("SELECT LASTVAL()", Integer.class);
-        endereco.setId_endereco(id);
+        try {
+            int id = jdbcTemplate.queryForObject(sql, new Object[]{endereco.getRua(), endereco.getId_bairro(), endereco.getId_cidade(), endereco.getId_estado(), endereco.getId_pais()}, Integer.class);
+            endereco.setId_endereco(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return endereco;
     }
 
     @Override
-    public Optional<EnderecoEntity> findById(int id) {
+    public EnderecoDTO findById(int id) {
         String sql = "SELECT * FROM endereco WHERE id_endereco = ?";
-        EnderecoEntity enderecoEntity = null;
+        EnderecoDTO endereco = null;
         try {
-            enderecoEntity = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
+            endereco = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(enderecoEntity);
+        return endereco;
     }
 
     @Override
-    public List<EnderecoEntity> findAll() {
+    public List<EnderecoDTO> findAll() {
         String sql = "SELECT * FROM endereco";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
-    public EnderecoEntity update(EnderecoEntity endereco) {
+    public EnderecoDTO update(EnderecoDTO endereco) {
         String sql = "UPDATE endereco SET rua = ?, id_bairro = ?,id_cidade = ?,id_estado = ?,id_pais = ? WHERE id_endereco = ?";
         jdbcTemplate.update(sql, endereco.getRua(), endereco.getId_bairro(), endereco.getId_cidade(), endereco.getId_estado(), endereco.getId_pais());
         return endereco;

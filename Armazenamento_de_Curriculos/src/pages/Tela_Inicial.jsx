@@ -27,9 +27,9 @@ const Tela_Inicial = () => {
                     </Form>
 
                     <Row xs='auto'>
-                        <Col sm={4}></Col>
-                        <Col sm={4}>
-                            <Button className='botao-login-inicial' variant='primary' href='login' type='button'>Login</Button>
+                        <Col sm={2}></Col>
+                        <Col sm={7}>
+                            <Button className='botao-login-inicial' variant='primary' href='/meu-curriculo' type='button'>Meu Curriculo</Button>
                         </Col>
                     </Row>
                 </Container>

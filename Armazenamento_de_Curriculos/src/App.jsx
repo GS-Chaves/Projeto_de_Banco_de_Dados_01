@@ -24,8 +24,7 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route element={<Tela_Inicial />} path="/" />
               <Route element={<Tela_de_Busca />} path="/buscar" />
-              <Route element={<Tela_de_Novo_Curriculo />} path="/novo-curriculo" />
-              <Route element={<Tela_de_Curriculo />} path="/curriculo" />
+              <Route element={<Tela_de_Curriculo />} path="/meu-curriculo" />
               <Route element={<Tela_Alterar_Curriculo />} path="/alterar" />
             </Route>
 

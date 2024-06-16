@@ -1,53 +1,56 @@
-package com.curriculo.api.curriculo.repository.cidade;
+package com.curriculo.api.curriculo.service;
 
-import com.curriculo.api.curriculo.entity.CidadeEntity;
+import com.curriculo.api.curriculo.dto.CidadeDTO;
+import com.curriculo.api.curriculo.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Repository
-public class CidadeRepositoryImpl implements CidadeRepository {
+@Service
+public class CidadeService implements CidadeRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<CidadeEntity> rowMapper = new BeanPropertyRowMapper<>(CidadeEntity.class);
+    private RowMapper<CidadeDTO> rowMapper = new BeanPropertyRowMapper<>(CidadeDTO.class);
 
 
     @Override
-    public CidadeEntity save(CidadeEntity cidade) {
+    public CidadeDTO save(CidadeDTO cidade) {
         String sql = "INSERT INTO cidade (nome_cidade) VALUES (?)";
-        jdbcTemplate.update(sql, cidade.getNome_cidade());
-        int id = jdbcTemplate.queryForObject("SELECT LASTVAL()", Integer.class);
-        cidade.setId_cidade(id);
+        try {
+            int id = jdbcTemplate.queryForObject(sql, new Object[]{cidade.getNome_cidade()}, Integer.class);
+            cidade.setId_cidade(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return cidade;
     }
 
     @Override
-    public Optional<CidadeEntity> findById(int id) {
+    public CidadeDTO findById(int id) {
         String sql = "SELECT * FROM cidade WHERE id_cidade = ?";
-        CidadeEntity cidade = null;
+        CidadeDTO cidade = null;
         try {
             cidade = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(cidade);
+        return cidade;
     }
 
     @Override
-    public List<CidadeEntity> findAll() {
+    public List<CidadeDTO> findAll() {
         String sql = "SELECT * FROM cidade";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
-    public CidadeEntity update(CidadeEntity cidade) {
+    public CidadeDTO update(CidadeDTO cidade) {
         String sql = "UPDATE cidade SET nome_cidade = ? WHERE id_cidade = ?";
         jdbcTemplate.update(sql, cidade.getNome_cidade(), cidade.getId_cidade());
         return cidade;

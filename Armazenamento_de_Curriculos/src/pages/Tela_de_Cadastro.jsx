@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Container } from 'react-bootstrap';
+import API from '../axios/config';
 
 import '../styles/telaCadastro.css';
 
 const Tela_de_Cadastro = () => {
+    const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [userName, setUserName] = useState("");
@@ -15,7 +18,7 @@ const Tela_de_Cadastro = () => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         const password = form.elements.validationCustom04.value;
         const confirmPassword = form.elements.validationCustom05.value;
@@ -27,7 +30,18 @@ const Tela_de_Cadastro = () => {
             }
         } else {
             setPasswordMatch(true);
-            alert("Enviando os dados: " + userName + " " + userLastName + " - " + userEmail + " - " + userPassword);
+            const name = userName + " " + userLastName;
+
+            const post = {
+                nome_usuario: name,
+                email_usuario: userEmail,
+                senha_usuario: userPassword
+            };
+
+            console.log(post);
+
+            await API.post("/usuario", post);
+            navigate("/buscar/");
         }
         event.preventDefault();
         setValidated(true);
@@ -89,6 +103,114 @@ const Tela_de_Cadastro = () => {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
+
+                <h2>Endereço</h2>
+
+                <Row className='mb-3'>
+                    <Form.Group as={Col} className="mb-3" controlId="validationCustom06">
+                        <Form.Label>Rua</Form.Label>
+                        <Form.Control placeholder="Digite sua Rua..." required />
+                        <Form.Control.Feedback>Ok!</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor coloque sua rua!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Label>Bairro</Form.Label>
+                        <Form.Select required>
+                            <option value="">Escolha uma opção!</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Opção Inválida!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Label>Cidade</Form.Label>
+                        <Form.Select required>
+                            <option value="">Escolha uma opção!</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Opção Inválida!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Label>Estado</Form.Label>
+                        <Form.Select required>
+                            <option value="">Escolha uma opção!</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Opção Inválida!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Label>Pais</Form.Label>
+                        <Form.Select required>
+                            <option value="">Escolha uma opção!</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Opção Inválida!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="validationCustom06">
+                        <Form.Label>CEP</Form.Label>
+                        <Form.Control placeholder="Digite seu CEP..." required />
+                        <Form.Control.Feedback>Ok!</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor coloque seu CEP!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Row>
+
+                <h2>Formação</h2>
+
+                <Row className='mb-3'>
+                    <Form.Group as={Col} controlId="validationCustom06">
+                        <Form.Label>Cursos Completos</Form.Label>
+                        <Form.Control placeholder="Digite seus Cursos Completos..." required />
+                        <Form.Control.Feedback>Ok!</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor preencha esse campo!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="validationCustom06">
+                        <Form.Label>Cursos em Andamento</Form.Label>
+                        <Form.Control placeholder="Digite seus Cursos em Andamento..." required />
+                        <Form.Control.Feedback>Ok!</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor preencha esse campo!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Row>
+
+                <h2>Experiencia Profissional</h2>
+
+                <Row>
+                    <Form.Group as={Col} controlId="validationCustom06">
+                        <Form.Label>Cursos em Andamento</Form.Label>
+                        <Form.Control placeholder="Digite seus Cursos em Andamento..." required />
+                        <Form.Control.Feedback>Ok!</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor preencha esse campo!
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Row>
+
                 <Form.Group className="mb-3">
                     <Form.Check
                         required

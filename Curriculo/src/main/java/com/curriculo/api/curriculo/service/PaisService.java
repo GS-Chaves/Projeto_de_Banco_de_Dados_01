@@ -1,53 +1,56 @@
-package com.curriculo.api.curriculo.repository.pais;
+package com.curriculo.api.curriculo.service;
 
-import com.curriculo.api.curriculo.entity.PaisEntity;
+import com.curriculo.api.curriculo.dto.PaisDTO;
+import com.curriculo.api.curriculo.repository.PaisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Repository
-public class PaisRepositoryImpl implements PaisRepository {
+@Service
+public class PaisService implements PaisRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<PaisEntity> rowMapper = new BeanPropertyRowMapper<>(PaisEntity.class);
+    private RowMapper<PaisDTO> rowMapper = new BeanPropertyRowMapper<>(PaisDTO.class);
 
 
     @Override
-    public PaisEntity save(PaisEntity pais) {
+    public PaisDTO save(PaisDTO pais) {
         String sql = "INSERT INTO pais (nome_pais) VALUES (?)";
-        jdbcTemplate.update(sql, pais.getNome_pais());
-        int id = jdbcTemplate.queryForObject("SELECT LASTVAL()", Integer.class);
-        pais.setId_pais(id);
+        try {
+            int id = jdbcTemplate.queryForObject(sql, new Object[]{pais.getNome_pais()}, Integer.class);
+            pais.setId_pais(id);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return pais;
     }
 
     @Override
-    public Optional<PaisEntity> findById(int id) {
+    public PaisDTO findById(int id) {
         String sql = "SELECT * FROM pais WHERE id_pais = ?";
-        PaisEntity pais = null;
+        PaisDTO pais = null;
         try {
             pais = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(pais);
+        return pais;
     }
 
     @Override
-    public List<PaisEntity> findAll() {
+    public List<PaisDTO> findAll() {
         String sql = "SELECT * FROM pais";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
-    public PaisEntity update(PaisEntity pais) {
+    public PaisDTO update(PaisDTO pais) {
         String sql = "UPDATE pais SET nome_pais = ? WHERE id_pais = ?";
         jdbcTemplate.update(sql, pais.getNome_pais(), pais.getId_pais());
         return pais;

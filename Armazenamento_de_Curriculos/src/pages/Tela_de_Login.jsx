@@ -31,7 +31,7 @@ const Tela_de_Login = () => {
                     <Button className='col-md-12' variant="primary" type="submit">
                         Login
                     </Button>
-                    <p className='registrar'>Não tem uma conta? <a className='linkRegistrar' href="cadastro">Cadastre-se</a></p>
+                    <p className='registrar'>Não tem uma conta? <a className='linkRegistrar' href="/cadastro/">Cadastre-se</a></p>
                 </Form>
             </div>
         </div>
