@@ -1,0 +1,53 @@
+Local de armazenamento de curriculos:
+
+**Cada Curriculo deve ter um ID Unico**
+**Header com logo do site, Botão para Tela de Resultado de Busca e Botão para Tela de Login**
+**Precisa funcionar no monitor da sala**
+
+Tela de Cadastro
+Tela de Login
+Tela de Pesquisa com Login (Tela Principal)
+Tela de Resultado de busca
+Tela Criação de Curriculo
+Tela de alteração de Curriculo
+
+Tela de Cadastro:
+-Nome completo
+-Email
+-Senha
+-Data de Nascimento (Validação para maiores de 16anos)
+-Botao de Login (Redireciona para tela de Login)
+
+Tela de Pesquisa com Login (Tela Principal):
+-Campo de Pesquisa (por nome)
+-Botao de Login (Redireciona para tela de login)
+-Botao de Cadastro (Redireciona para tela de Cadastro)
+
+Tela de Resultado de busca:
+-Campo para nova pesquisa
+-???Filtros de Pesquisa???
+-Resultado da Pesquisa (Curriculo)
+
+Tela Criação de Curriculo:
+-Campos de preenchimento para criação de Curriculo(
+	Identificação
+		?.Foto Pessoal?
+		.Nome Completo *
+		.CPF
+		.Email
+		.Data de Nascimento
+	Endereço
+		.Rua
+		.Bairro
+		.Cidade
+		.Estado
+		.Pais
+	Formação
+		.Cursos Completos
+		.Cursos em Andamento
+	Experiencia Profissional
+		.Locais em que já trabalhou (se trabalhou)
+)
+
+Tela de alteração de Curriculo:
+-Campos para alteração do Curriculo (mesmos da criação)
