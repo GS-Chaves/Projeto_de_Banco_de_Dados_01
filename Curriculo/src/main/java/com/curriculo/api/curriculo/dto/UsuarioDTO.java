@@ -12,4 +12,5 @@ public class UsuarioDTO {
     private String nome_usuario;
     private String email_usuario;
     private String senha_usuario;
+    private CurriculoDTO obj_curriculo;
 }

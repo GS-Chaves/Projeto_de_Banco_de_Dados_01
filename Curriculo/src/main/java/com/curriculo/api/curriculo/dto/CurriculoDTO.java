@@ -1,6 +1,5 @@
 package com.curriculo.api.curriculo.dto;
 
-import com.curriculo.api.curriculo.entity.CurriculoEntity;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -18,7 +17,4 @@ public class CurriculoDTO {
     private LocalDate data_nascimento;
     private int id_usuario;
 
-    public CurriculoDTO(CurriculoEntity curriculoEntity) {
-        BeanUtils.copyProperties(curriculoEntity, this);
-    }
 }

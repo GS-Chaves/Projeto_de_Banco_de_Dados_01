@@ -50,7 +50,7 @@ public class UsuarioService implements UsuarioRepository {
         List<UsuarioDTO> usuarios = null;
         try {
             usuarios = jdbcTemplate.query(sql, new Object[]{nome}, rowMapper);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return usuarios;
