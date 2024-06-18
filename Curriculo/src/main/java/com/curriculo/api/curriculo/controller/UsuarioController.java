@@ -21,13 +21,13 @@ public class UsuarioController {
         return usuarioService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public UsuarioDTO findById(@PathVariable("id") int id){
         return usuarioService.findById(id);
     }
 
-    @GetMapping("/{nome}")
-    public List<UsuarioDTO> findByNome(@PathVariable("nome") String nome){
+    @GetMapping("/nome/{nome}")
+    public UsuarioDTO findByNome(@PathVariable("nome") String nome){
         return usuarioService.findByNome(nome);
     }
 

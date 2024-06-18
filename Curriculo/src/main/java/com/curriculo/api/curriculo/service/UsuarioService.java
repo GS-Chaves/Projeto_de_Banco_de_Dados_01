@@ -1,6 +1,6 @@
 package com.curriculo.api.curriculo.service;
 
-
+import com.curriculo.api.curriculo.dto.CurriculoDTO;
 import com.curriculo.api.curriculo.dto.UsuarioDTO;
 import com.curriculo.api.curriculo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
 @Service
 public class UsuarioService implements UsuarioRepository {
 
@@ -18,6 +21,27 @@ public class UsuarioService implements UsuarioRepository {
 
     private RowMapper<UsuarioDTO> rowMapper = new BeanPropertyRowMapper<>(UsuarioDTO.class);
 
+    private static class UsuarioDTORowMapper implements RowMapper<UsuarioDTO> {
+        @Override
+        public UsuarioDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+            CurriculoDTO curriculo = new CurriculoDTO(
+                    rs.getInt("id_curriculo"),
+                    rs.getString("url_foto_pessoal"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getInt("id_usuario")
+            );
+
+            UsuarioDTO usuario = new UsuarioDTO();
+            usuario.setId_usuario(rs.getInt("id_usuario"));
+            usuario.setNome_usuario(rs.getString("nome_usuario"));
+            usuario.setEmail_usuario(rs.getString("email_usuario"));
+            usuario.setSenha_usuario(rs.getString("senha_usuario"));
+            usuario.setObj_curriculo(curriculo);
+
+            return usuario;
+        }
+    }
 
     @Override
     public UsuarioDTO save(UsuarioDTO usuario) {
@@ -31,35 +55,37 @@ public class UsuarioService implements UsuarioRepository {
         return usuario;
     }
 
-
     @Override
     public UsuarioDTO findById(int id) {
         String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
         UsuarioDTO usuario = null;
         try {
             usuario = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return usuario;
     }
 
     @Override
-    public List<UsuarioDTO> findByNome(String nome) {
-        String sql = "SELECT usuario.*, curriculo.* FROM usuario INNER JOIN curriculo ON usuario.id_usuario = curriculo.id_usuario WHERE usuario.nome_usuario LIKE '%e%'";
-        List<UsuarioDTO> usuarios = null;
+    public UsuarioDTO findByNome(String nome) {
+        String sql = "SELECT u.id_usuario, u.nome_usuario, u.email_usuario, u.senha_usuario, " +
+                "c.id_curriculo, c.url_foto_pessoal, c.cpf, c.data_nascimento, c.id_usuario " +
+                "FROM usuario u " +
+                "INNER JOIN curriculo c ON u.id_usuario = c.id_usuario " +
+                "WHERE u.nome_usuario = ?";
+        UsuarioDTO usuario = null;
         try {
-            usuarios = jdbcTemplate.query(sql, new Object[]{nome}, rowMapper);
+            usuario = jdbcTemplate.queryForObject(sql, new Object[]{nome}, new UsuarioDTORowMapper());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return usuarios;
+        return usuario;
     }
-
 
     @Override
     public List<UsuarioDTO> findAll() {
-        String sql = "SELECT * FROM usuario";
+        String sql = "SELECT * FROM vw_usuario_sem_senha";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
