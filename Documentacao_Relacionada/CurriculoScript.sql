@@ -1,5 +1,7 @@
 CREATE TABLE usuario();
 CREATE TABLE curriculo();
+CREATE TABLE curriculo_formacao();
+CREATE TABLE curriculo_experiencia_profissional();
 CREATE TABLE endereco();
 CREATE TABLE bairro();
 CREATE TABLE cidade();
@@ -17,7 +19,7 @@ ALTER TABLE usuario
 ALTER TABLE curriculo
 	ADD COLUMN id_curriculo SERIAL PRIMARY KEY,
 	ADD COLUMN url_foto_pessoal VARCHAR(255),
-	ADD COLUMN cpf INT UNIQUE,
+	ADD COLUMN cpf VARCHAR(14),
 	ADD COLUMN data_nascimento DATE,
 	ADD COLUMN id_usuario INT,
 	ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario);
@@ -50,20 +52,26 @@ ALTER TABLE pais
 	ADD COLUMN id_pais SERIAL PRIMARY KEY,
 	ADD COLUMN nome_pais VARCHAR(255);
 
+ALTER TABLE curriculo_formacao
+	ADD COLUMN id_curriculo INT,
+	ADD CONSTRAINT fk_id_curriculo FOREIGN KEY (id_curriculo) REFERENCES curriculo (id_curriculo),
+	ADD COLUMN id_formacao INT,
+	ADD CONSTRAINT fk_id_formacao FOREIGN KEY (id_formacao) REFERENCES formacao (id_formacao);
+
 ALTER TABLE formacao
 	ADD COLUMN id_formacao SERIAL PRIMARY KEY,
 	ADD COLUMN curso VARCHAR(255),
-	ADD COLUMN status_formacao BOOLEAN,
+	ADD COLUMN status_formacao BOOLEAN;
+
+ALTER TABLE curriculo_experiencia_profissional
 	ADD COLUMN id_curriculo INT,
-	ADD CONSTRAINT fk_id_curriculo FOREIGN KEY (id_curriculo) REFERENCES curriculo (id_curriculo);
+	ADD CONSTRAINT fk_id_curriculo FOREIGN KEY (id_curriculo) REFERENCES curriculo (id_curriculo),
+	ADD COLUMN id_exp_profissional INT,
+	ADD CONSTRAINT fk_id_exp_profissional FOREIGN KEY (id_exp_profissional) REFERENCES experiencia_profissional (id_exp_profissional);
 
 ALTER TABLE experiencia_profissional
 	ADD COLUMN id_exp_profissional SERIAL PRIMARY KEY,
 	ADD COLUMN nome_empresa VARCHAR(255),
 	ADD COLUMN data_inicio DATE,
 	ADD COLUMN data_termino DATE,
-	ADD COLUMN status_exp_profissional BOOLEAN,
-	ADD COLUMN id_curriculo INT,
-	ADD CONSTRAINT fk_id_curriculo FOREIGN KEY (id_curriculo) REFERENCES curriculo (id_curriculo);
-
-SELECT * FROM experiencia_profissional;
+	ADD COLUMN status_exp_profissional BOOLEAN;
