@@ -12,10 +12,8 @@ import org.springframework.beans.BeanUtils;
 public class EnderecoEntity {
     private int id_endereco;
     private String rua;
-    private int id_bairro;
-    private int id_cidade;
-    private int id_estado;
-    private int id_pais;
+    private String num;
+    private int fk_id_bairro;
 
     public EnderecoEntity(EnderecoDTO enderecoDTO){
         BeanUtils.copyProperties(enderecoDTO, this);

@@ -17,7 +17,7 @@ public class ExpProfissionalEntity {
     private LocalDate data_inicio;
     private LocalDate data_termino;
     private boolean status_exp_profissional;
-    private int id_curriculo;
+    private int fk_id_curriculo;
 
     public ExpProfissionalEntity(ExpProfissionalDTO expProfissionalDTO) {
         BeanUtils.copyProperties(expProfissionalDTO, this);

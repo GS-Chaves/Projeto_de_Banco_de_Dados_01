@@ -1,6 +1,8 @@
 package com.curriculo.api.curriculo.controller;
 
 import com.curriculo.api.curriculo.dto.UsuarioDTO;
+import com.curriculo.api.curriculo.dto.ViewUsuarioCurriculoEnderecoDTO;
+import com.curriculo.api.curriculo.dto.ViewUsuarioSemSenhaDTO;
 import com.curriculo.api.curriculo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<UsuarioDTO> findAll(){
+    public List<ViewUsuarioSemSenhaDTO> findAll(){
         return usuarioService.findAll();
     }
 
@@ -30,6 +32,8 @@ public class UsuarioController {
     public UsuarioDTO findByNome(@PathVariable("nome") String nome){
         return usuarioService.findByNome(nome);
     }
+
+
 
     @PostMapping
     public void save(@RequestBody UsuarioDTO usuarioDTO){
@@ -46,4 +50,6 @@ public class UsuarioController {
         usuarioService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+
 }

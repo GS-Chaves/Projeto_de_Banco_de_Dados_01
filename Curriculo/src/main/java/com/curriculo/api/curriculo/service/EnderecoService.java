@@ -4,10 +4,13 @@ import com.curriculo.api.curriculo.dto.EnderecoDTO;
 import com.curriculo.api.curriculo.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -21,9 +24,9 @@ public class EnderecoService implements EnderecoRepository {
 
     @Override
     public EnderecoDTO save(EnderecoDTO endereco) {
-        String sql = "INSERT INTO endereco (rua, id_bairro, id_cidade, id_estado, id_pais) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO endereco (rua, id_bairro) VALUES (?,?,?,?,?)";
         try {
-            int id = jdbcTemplate.queryForObject(sql, new Object[]{endereco.getRua(), endereco.getId_bairro(), endereco.getId_cidade(), endereco.getId_estado(), endereco.getId_pais()}, Integer.class);
+            int id = jdbcTemplate.queryForObject(sql, new Object[]{endereco.getRua(), endereco.getId_bairro()}, Integer.class);
             endereco.setId_endereco(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,14 +54,51 @@ public class EnderecoService implements EnderecoRepository {
 
     @Override
     public EnderecoDTO update(EnderecoDTO endereco) {
-        String sql = "UPDATE endereco SET rua = ?, id_bairro = ?,id_cidade = ?,id_estado = ?,id_pais = ? WHERE id_endereco = ?";
-        jdbcTemplate.update(sql, endereco.getRua(), endereco.getId_bairro(), endereco.getId_cidade(), endereco.getId_estado(), endereco.getId_pais());
+        String sql = "UPDATE endereco SET rua = ?, id_bairro = ? WHERE id_endereco = ?";
+        jdbcTemplate.update(sql, endereco.getRua(), endereco.getId_bairro());
         return endereco;
     }
 
     @Override
     public void deleteById(int id) {
-        String sql = "DELETE FROM endereco WHERE id_endereco = ?";
-        jdbcTemplate.update(sql, id);
+        String sqlDeleteFormacao = "DELETE FROM formacao WHERE fk_id_curriculo IN " +
+                "(SELECT id_curriculo FROM curriculo WHERE fk_id_endereco IN " +
+                "(SELECT id_endereco FROM endereco WHERE id_endereco = ?))";
+
+        String sqlDeleteExperienciaProfissional = "DELETE FROM experiencia_profissional WHERE fk_id_curriculo IN " +
+                "(SELECT id_curriculo FROM curriculo WHERE fk_id_endereco IN " +
+                "(SELECT id_endereco FROM endereco WHERE id_endereco = ?))";
+
+        String sqlDeleteCurriculo = "DELETE FROM curriculo WHERE fk_id_endereco = ?";
+
+        String sqlDeleteEndereco = "DELETE FROM endereco WHERE id_endereco = ?";
+
+        try {
+            jdbcTemplate.execute((ConnectionCallback<Object>) connection -> {
+                try (PreparedStatement ps1 = connection.prepareStatement(sqlDeleteFormacao);
+                     PreparedStatement ps2 = connection.prepareStatement(sqlDeleteExperienciaProfissional);
+                     PreparedStatement ps3 = connection.prepareStatement(sqlDeleteCurriculo);
+                     PreparedStatement ps4 = connection.prepareStatement(sqlDeleteEndereco)) {
+
+                    connection.setAutoCommit(false);
+                    ps1.setInt(1, id);
+                    ps1.executeUpdate();
+                    ps2.setInt(1, id);
+                    ps2.executeUpdate();
+                    ps3.setInt(1, id);
+                    ps3.executeUpdate();
+                    ps4.setInt(1, id);
+                    ps4.executeUpdate();
+
+                    connection.commit();
+                    return null;
+                } catch (SQLException e) {
+                    connection.rollback();
+                    throw new RuntimeException(e);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

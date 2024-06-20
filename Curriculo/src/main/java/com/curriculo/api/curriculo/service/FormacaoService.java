@@ -23,7 +23,7 @@ public class FormacaoService implements FormacaoRepository {
     public FormacaoDTO save(FormacaoDTO formacao) {
         String sql = "INSERT INTO formacao (curso, status_formacao, id_curriculo) VALUES (?,?,?)";
         try {
-            int id = jdbcTemplate.queryForObject(sql, new Object[]{formacao.getCurso(), formacao.isStatus_formacao(), formacao.getId_curriculo()}, Integer.class);
+            int id = jdbcTemplate.queryForObject(sql, new Object[]{formacao.getCurso(), formacao.isStatus_formacao(), formacao.getFk_id_curriculo()}, Integer.class);
             formacao.setId_formacao(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class FormacaoService implements FormacaoRepository {
     @Override
     public FormacaoDTO update(FormacaoDTO formacao) {
         String sql = "UPDATE formacao SET curso = ?, status_formacao = ?, id_curriculo = ? WHERE id_formacao = ?";
-        jdbcTemplate.update(sql, formacao.getCurso(), formacao.isStatus_formacao(), formacao.getId_curriculo(), formacao.getId_formacao());
+        jdbcTemplate.update(sql, formacao.getCurso(), formacao.isStatus_formacao(), formacao.getFk_id_curriculo(), formacao.getId_formacao());
         return formacao;
     }
 

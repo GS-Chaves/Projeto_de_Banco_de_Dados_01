@@ -13,8 +13,7 @@ public class FormacaoDTO {
     private int id_formacao;
     private String curso;
     private boolean status_formacao;
-    private int id_curriculo;
-
+    private int fk_id_curriculo;
     public FormacaoDTO(FormacaoEntity formacaoEntity){
         BeanUtils.copyProperties(formacaoEntity, this);
     }

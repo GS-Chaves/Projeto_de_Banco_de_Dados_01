@@ -12,7 +12,7 @@ import org.springframework.beans.BeanUtils;
 public class BairroDTO {
     private int id_bairro;
     private String nome_bairro;
-
+    private int fk_id_cidade;
     public BairroDTO(BairroEntity bairroEntity){
         BeanUtils.copyProperties(bairroEntity, this);
     }

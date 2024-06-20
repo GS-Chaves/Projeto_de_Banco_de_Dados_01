@@ -2,6 +2,7 @@ package com.curriculo.api.curriculo.service;
 
 import com.curriculo.api.curriculo.dto.CurriculoDTO;
 import com.curriculo.api.curriculo.dto.UsuarioDTO;
+import com.curriculo.api.curriculo.dto.ViewUsuarioSemSenhaDTO;
 import com.curriculo.api.curriculo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,16 +21,18 @@ public class UsuarioService implements UsuarioRepository {
     private JdbcTemplate jdbcTemplate;
 
     private RowMapper<UsuarioDTO> rowMapper = new BeanPropertyRowMapper<>(UsuarioDTO.class);
-
+    private RowMapper<ViewUsuarioSemSenhaDTO> rowMapperAllUsers = new BeanPropertyRowMapper<>(ViewUsuarioSemSenhaDTO.class);
     private static class UsuarioDTORowMapper implements RowMapper<UsuarioDTO> {
         @Override
         public UsuarioDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+
             CurriculoDTO curriculo = new CurriculoDTO(
                     rs.getInt("id_curriculo"),
                     rs.getString("url_foto_pessoal"),
                     rs.getString("cpf"),
                     rs.getDate("data_nascimento").toLocalDate(),
-                    rs.getInt("id_usuario")
+                    rs.getInt("fk_id_usuario"),
+                    rs.getInt("fk_id_endereco")
             );
 
             UsuarioDTO usuario = new UsuarioDTO();
@@ -70,9 +73,9 @@ public class UsuarioService implements UsuarioRepository {
     @Override
     public UsuarioDTO findByNome(String nome) {
         String sql = "SELECT u.id_usuario, u.nome_usuario, u.email_usuario, u.senha_usuario, " +
-                "c.id_curriculo, c.url_foto_pessoal, c.cpf, c.data_nascimento, c.id_usuario " +
+                "c.id_curriculo, c.url_foto_pessoal, c.cpf, c.data_nascimento, c.fk_id_usuario, c.fk_id_endereco " +
                 "FROM usuario u " +
-                "INNER JOIN curriculo c ON u.id_usuario = c.id_usuario " +
+                "INNER JOIN curriculo c ON u.id_usuario = c.fk_id_usuario " +
                 "WHERE u.nome_usuario = ?";
         UsuarioDTO usuario = null;
         try {
@@ -84,9 +87,9 @@ public class UsuarioService implements UsuarioRepository {
     }
 
     @Override
-    public List<UsuarioDTO> findAll() {
+    public List<ViewUsuarioSemSenhaDTO> findAll() {
         String sql = "SELECT * FROM vw_usuario_sem_senha";
-        return jdbcTemplate.query(sql, rowMapper);
+        return jdbcTemplate.query(sql, rowMapperAllUsers);
     }
 
     @Override
@@ -98,7 +101,18 @@ public class UsuarioService implements UsuarioRepository {
 
     @Override
     public void deleteById(int id) {
-        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
-        jdbcTemplate.update(sql, id);
+        String deleteExperienciaProfissional = "DELETE FROM experiencia_profissional WHERE fk_id_curriculo IN (SELECT id_curriculo FROM curriculo WHERE fk_id_usuario = ?)";
+        String deleteFormacao = "DELETE FROM formacao WHERE fk_id_curriculo IN (SELECT id_curriculo FROM curriculo WHERE fk_id_usuario = ?)";
+        String deleteCurriculo = "DELETE FROM curriculo WHERE fk_id_usuario = ?";
+
+        // Executar as queries na ordem correta
+        jdbcTemplate.update(deleteExperienciaProfissional, id);
+        jdbcTemplate.update(deleteFormacao, id);
+        jdbcTemplate.update(deleteCurriculo, id);
+
+        // Finalmente, deletar o usuário
+        String deleteUsuario = "DELETE FROM usuario WHERE id_usuario = ?";
+        jdbcTemplate.update(deleteUsuario, id);
     }
+
 }

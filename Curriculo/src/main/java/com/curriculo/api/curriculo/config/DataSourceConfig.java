@@ -1,5 +1,9 @@
 package com.curriculo.api.curriculo.config;
 
+import com.curriculo.api.curriculo.repository.BairroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
